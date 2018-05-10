@@ -1,29 +1,64 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div class="home">
+        <button @click='auto = !auto'>切换模式</button>
+        <EnterAnim
+            v-if='auto'
+            animate-class='fade'
+            v-for='item in 10'>
+            <HelloWorld msg='aaa' />
+        </EnterAnim>
+        <EnterAnim
+            v-else
+            :manual='manual'
+            v-for='item in 10'>
+            <HelloWorld msg='aaa' />
+        </EnterAnim>
     </div>
-    <router-view/>
-  </div>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+// @ is an alias to /src
+import EnterAnim from '@/components/EnterAnim.vue'
+import HelloWorld from '@/components/HelloWorld.vue'
+
+export default {
+	name: 'home',
+	components: {
+		EnterAnim,
+		HelloWorld,
+	},
+	data() {
+		return {
+			// true:进入视窗时触发动画, false:手动通过控制manual属性控制动画
+			auto: false,
+			// 是否显示模糊背景
+			manual: 'on',
+		}
+	},
+	mounted() {
+		setTimeout(() => {
+			this.manual = 'off'
+		}, 2000)
+	},
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+</script>
+
+<style lang="scss">
+.item {
+	height: 200px;
+	background: #999;
+}
+@keyframes fade {
+	from {
+		opacity: 0;
+		// filter: blur(20px);
+	}
+	to {
+		opacity: 1;
+		// filter: blur(0);
+	}
+}
+.fade {
+	animation: fade 2s;
 }
 </style>
